@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Academic Notes</title>
+    <meta name="description" content="Browse academic notes, assignments, question papers, and study material by folder.">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="topbar" aria-label="Main navigation">
+        <a class="brand" href="./">Academic Notes</a>
+        <a class="github-link" id="repoLink" href="#" hidden>View Repository</a>
+      </nav>
+
+      <section class="intro">
+        <p class="eyebrow">Shared study material</p>
+        <h1>Find notes exactly where they live in the repo.</h1>
+        <p class="intro-copy">
+          Add or update folders in GitHub, and this page refreshes its folder browser automatically after the index is rebuilt.
+        </p>
+        <label class="search-box">
+          <span>Search</span>
+          <input id="searchInput" type="search" placeholder="Search folders, PDFs, assignments..." autocomplete="off">
+        </label>
+      </section>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" aria-label="Folder browser">
+        <div class="panel-title">Folders</div>
+        <div id="folderTree" class="folder-tree" aria-live="polite"></div>
+      </aside>
+
+      <section class="content">
+        <div class="content-header">
+          <div>
+            <p class="eyebrow">Current folder</p>
+            <h2 id="currentTitle">Loading...</h2>
+          </div>
+          <a class="open-folder" id="openFolderLink" href="#" hidden>Open folder</a>
+        </div>
+
+        <div id="breadcrumb" class="breadcrumb" aria-label="Breadcrumb"></div>
+        <div id="summary" class="summary"></div>
+        <div id="items" class="items" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <template id="emptyStateTemplate">
+      <article class="empty-state">
+        <h3>No material found</h3>
+        <p>Add folders or files to this repo, run the index generator, and they will appear here.</p>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

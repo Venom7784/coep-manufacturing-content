@@ -1,0 +1,22 @@
+# OS/editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Local dependencies/build output
+node_modules/
+dist/
+build/
+
+# Local preview/cache files
+.cache/
+.parcel-cache/

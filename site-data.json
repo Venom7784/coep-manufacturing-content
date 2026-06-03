@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-06-03T11:39:45.106Z",
+  "repositoryUrl": "",
+  "root": {
+    "type": "folder",
+    "name": "",
+    "path": "",
+    "children": [
+      {
+        "type": "folder",
+        "name": "notes",
+        "path": "notes",
+        "children": [
+          {
+            "type": "file",
+            "name": "Stochastic_Processes (1).pdf",
+            "path": "notes/Stochastic_Processes (1).pdf",
+            "size": 193168,
+            "updatedAt": "2026-04-19T10:11:28.279Z"
+          }
+        ]
+      }
+    ]
+  }
+}
