@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-03T12:37:04.023Z",
+  "generatedAt": "2026-06-03T12:45:53.307Z",
   "repositoryUrl": "https://github.com/Venom7784/coep-manufacturing-content",
   "root": {
     "type": "folder",
@@ -16,56 +16,56 @@
             "name": "Markov_Chain_New.pdf",
             "path": "notes/Markov_Chain_New.pdf",
             "size": 198759,
-            "updatedAt": "2026-04-19T11:04:04.720Z"
+            "updatedAt": "2026-06-03T12:45:48.480Z"
           },
           {
             "type": "file",
             "name": "Non_Parametric_Tests.pdf",
             "path": "notes/Non_Parametric_Tests.pdf",
             "size": 211399,
-            "updatedAt": "2026-03-01T08:54:18.949Z"
+            "updatedAt": "2026-06-03T12:45:48.481Z"
           },
           {
             "type": "file",
             "name": "OE_Stat_with_R_2.pdf",
             "path": "notes/OE_Stat_with_R_2.pdf",
             "size": 127766,
-            "updatedAt": "2026-04-19T18:21:41.355Z"
+            "updatedAt": "2026-06-03T12:45:48.483Z"
           },
           {
             "type": "file",
             "name": "OE_Stat_with_R_3_final.pdf",
             "path": "notes/OE_Stat_with_R_3_final.pdf",
             "size": 161622,
-            "updatedAt": "2026-03-01T08:54:11.303Z"
+            "updatedAt": "2026-06-03T12:45:48.484Z"
           },
           {
             "type": "file",
             "name": "OE_Stat_with_R_Chi_Square.pdf",
             "path": "notes/OE_Stat_with_R_Chi_Square.pdf",
             "size": 218508,
-            "updatedAt": "2026-03-01T08:54:26.546Z"
+            "updatedAt": "2026-06-03T12:45:48.485Z"
           },
           {
             "type": "file",
             "name": "OE_Stat_with_R.pdf",
             "path": "notes/OE_Stat_with_R.pdf",
             "size": 268179,
-            "updatedAt": "2026-03-01T08:54:06.232Z"
+            "updatedAt": "2026-06-03T12:45:48.482Z"
           },
           {
             "type": "file",
             "name": "Quality_Control (1).pdf",
             "path": "notes/Quality_Control (1).pdf",
             "size": 175719,
-            "updatedAt": "2026-06-03T09:42:31.170Z"
+            "updatedAt": "2026-06-03T12:45:48.485Z"
           },
           {
             "type": "file",
             "name": "Stochastic_Processes (1).pdf",
             "path": "notes/Stochastic_Processes (1).pdf",
             "size": 193168,
-            "updatedAt": "2026-04-19T10:11:28.279Z"
+            "updatedAt": "2026-06-03T12:45:48.486Z"
           }
         ]
       }
