@@ -82,7 +82,39 @@ function toPosixPath(value) {
 
 function repositoryUrl() {
   const repo = process.env.GITHUB_REPOSITORY;
-  return repo ? `https://github.com/${repo}` : "";
+  if (repo) {
+    return `https://github.com/${repo}`;
+  }
+
+  return normalizeRemoteUrl(readOriginRemote());
+}
+
+function readOriginRemote() {
+  const gitConfigPath = path.join(rootDir, ".git", "config");
+  if (!fs.existsSync(gitConfigPath)) {
+    return "";
+  }
+
+  const config = fs.readFileSync(gitConfigPath, "utf8");
+  const originSection = config.match(/\[remote "origin"\]([\s\S]*?)(?:\n\[|$)/);
+  if (!originSection) {
+    return "";
+  }
+
+  const urlLine = originSection[1].match(/^\s*url\s*=\s*(.+)$/m);
+  return urlLine ? urlLine[1].trim() : "";
+}
+
+function normalizeRemoteUrl(remote) {
+  if (!remote) {
+    return "";
+  }
+
+  if (remote.startsWith("git@github.com:")) {
+    return `https://github.com/${remote.slice("git@github.com:".length).replace(/\.git$/, "")}`;
+  }
+
+  return remote.replace(/\.git$/, "");
 }
 
 const data = {
