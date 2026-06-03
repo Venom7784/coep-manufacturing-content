@@ -1,4 +1,4 @@
-name: Build folder index
+name: Deploy GitHub Pages
 
 on:
   push:
@@ -8,10 +8,19 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  build-index:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -25,15 +34,14 @@ jobs:
       - name: Generate site data
         run: node scripts/build-index.js
 
-      - name: Commit updated site data
-        run: |
-          if git diff --quiet -- site-data.json; then
-            echo "site-data.json is already up to date"
-            exit 0
-          fi
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add site-data.json
-          git commit -m "Update folder index"
-          git push
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

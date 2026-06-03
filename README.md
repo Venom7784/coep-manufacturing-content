@@ -20,13 +20,13 @@ sem4/
     unit-1.pdf
 ```
 
-After you push changes to GitHub, the included GitHub Action runs `scripts/build-index.js` and updates `site-data.json`. The website then shows the latest folder structure.
+After you push changes to GitHub, the included GitHub Action runs `scripts/build-index.js` during deployment. The generated `site-data.json` is included in the deployed website without creating an extra commit.
 
 ## Adding material
 
 1. Add or update any folder/file in the repo.
 2. Commit and push to GitHub.
-3. Wait for the `Build folder index` action to finish.
+3. Wait for the `Deploy GitHub Pages` action to finish.
 4. Refresh the GitHub Pages website.
 
 ## Local preview
@@ -54,9 +54,8 @@ http://localhost:8000
 In your GitHub repo:
 
 1. Go to `Settings` > `Pages`.
-2. Set source to `Deploy from a branch`.
-3. Select the `main` branch and `/root`.
-4. Save.
+2. Set source to `GitHub Actions`.
+3. Save if GitHub shows a save button.
 
 Your site will be available at:
 
