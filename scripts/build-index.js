@@ -118,7 +118,6 @@ function normalizeRemoteUrl(remote) {
 }
 
 const data = {
-  generatedAt: new Date().toISOString(),
   repositoryUrl: repositoryUrl(),
   root: buildNode(rootDir),
 };

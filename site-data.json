@@ -1,5 +1,4 @@
 {
-  "generatedAt": "2026-06-03T12:45:53.307Z",
   "repositoryUrl": "https://github.com/Venom7784/coep-manufacturing-content",
   "root": {
     "type": "folder",
@@ -8,64 +7,50 @@
     "children": [
       {
         "type": "folder",
-        "name": "notes",
-        "path": "notes",
+        "name": "OE_notes",
+        "path": "OE_notes",
         "children": [
           {
             "type": "file",
             "name": "Markov_Chain_New.pdf",
-            "path": "notes/Markov_Chain_New.pdf",
+            "path": "OE_notes/Markov_Chain_New.pdf",
             "size": 198759,
-            "updatedAt": "2026-06-03T12:45:48.480Z"
+            "updatedAt": "2026-06-03T13:11:15.553Z"
           },
           {
             "type": "file",
             "name": "Non_Parametric_Tests.pdf",
-            "path": "notes/Non_Parametric_Tests.pdf",
+            "path": "OE_notes/Non_Parametric_Tests.pdf",
             "size": 211399,
-            "updatedAt": "2026-06-03T12:45:48.481Z"
+            "updatedAt": "2026-06-03T13:11:15.554Z"
           },
           {
             "type": "file",
             "name": "OE_Stat_with_R_2.pdf",
-            "path": "notes/OE_Stat_with_R_2.pdf",
+            "path": "OE_notes/OE_Stat_with_R_2.pdf",
             "size": 127766,
-            "updatedAt": "2026-06-03T12:45:48.483Z"
+            "updatedAt": "2026-06-03T13:11:15.558Z"
           },
           {
             "type": "file",
             "name": "OE_Stat_with_R_3_final.pdf",
-            "path": "notes/OE_Stat_with_R_3_final.pdf",
+            "path": "OE_notes/OE_Stat_with_R_3_final.pdf",
             "size": 161622,
-            "updatedAt": "2026-06-03T12:45:48.484Z"
+            "updatedAt": "2026-06-03T13:11:15.560Z"
           },
           {
             "type": "file",
             "name": "OE_Stat_with_R_Chi_Square.pdf",
-            "path": "notes/OE_Stat_with_R_Chi_Square.pdf",
+            "path": "OE_notes/OE_Stat_with_R_Chi_Square.pdf",
             "size": 218508,
-            "updatedAt": "2026-06-03T12:45:48.485Z"
+            "updatedAt": "2026-06-03T13:11:15.562Z"
           },
           {
             "type": "file",
             "name": "OE_Stat_with_R.pdf",
-            "path": "notes/OE_Stat_with_R.pdf",
+            "path": "OE_notes/OE_Stat_with_R.pdf",
             "size": 268179,
-            "updatedAt": "2026-06-03T12:45:48.482Z"
-          },
-          {
-            "type": "file",
-            "name": "Quality_Control (1).pdf",
-            "path": "notes/Quality_Control (1).pdf",
-            "size": 175719,
-            "updatedAt": "2026-06-03T12:45:48.485Z"
-          },
-          {
-            "type": "file",
-            "name": "Stochastic_Processes (1).pdf",
-            "path": "notes/Stochastic_Processes (1).pdf",
-            "size": 193168,
-            "updatedAt": "2026-06-03T12:45:48.486Z"
+            "updatedAt": "2026-06-03T13:11:15.557Z"
           }
         ]
       }
