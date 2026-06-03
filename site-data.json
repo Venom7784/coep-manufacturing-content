@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-03T11:39:45.106Z",
-  "repositoryUrl": "",
+  "generatedAt": "2026-06-03T12:00:54.660Z",
+  "repositoryUrl": "https://github.com/Venom7784/coep-manufacturing-content",
   "root": {
     "type": "folder",
     "name": "",
@@ -16,7 +16,7 @@
             "name": "Stochastic_Processes (1).pdf",
             "path": "notes/Stochastic_Processes (1).pdf",
             "size": 193168,
-            "updatedAt": "2026-04-19T10:11:28.279Z"
+            "updatedAt": "2026-06-03T12:00:49.633Z"
           }
         ]
       }
