@@ -11,25 +11,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install google-api-python-client google-auth
+        run: python -m pip install google-api-python-client google-auth
 
       - name: Write service account key
         env:
           GDRIVE_SERVICE_KEY: ${{ secrets.GDRIVE_SERVICE_KEY }}
-        run: printf '%s' "$GDRIVE_SERVICE_KEY" > service_account.json
+        run: |
+          if [ -z "$GDRIVE_SERVICE_KEY" ]; then
+            echo "::error::GDRIVE_SERVICE_KEY repository secret is missing or empty"
+            exit 1
+          fi
+
+          printf '%s' "$GDRIVE_SERVICE_KEY" > service_account.json
+          python -m json.tool service_account.json > /dev/null
 
       - name: Generate site
         env:
           GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
-        run: python generate_site.py
+        run: |
+          if [ -z "$GDRIVE_FOLDER_ID" ]; then
+            echo "::error::GDRIVE_FOLDER_ID repository secret is missing or empty"
+            exit 1
+          fi
+
+          python generate_site.py
 
       - name: Delete service account key
         if: always()

@@ -1,9 +1,11 @@
 import html
 import os
+import re
 from pathlib import Path
 
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
 
 ROOT_DIR = Path(__file__).resolve().parent
@@ -140,8 +142,13 @@ def count_files(folder):
     return len(folder["files"]) + sum(count_files(child) for child in folder["folders"])
 
 
+def normalize_folder_id(value):
+    match = re.search(r"drive\.google\.com/drive/(?:u/\d+/)?folders/([^/?#]+)", value)
+    return match.group(1) if match else value
+
+
 def main():
-    folder_id = os.environ.get("GDRIVE_FOLDER_ID", "").strip()
+    folder_id = normalize_folder_id(os.environ.get("GDRIVE_FOLDER_ID", "").strip())
     if not folder_id:
         raise RuntimeError("GDRIVE_FOLDER_ID environment variable is required")
     if not SERVICE_ACCOUNT_FILE.exists():
@@ -152,7 +159,22 @@ def main():
         scopes=[DRIVE_SCOPE],
     )
     service = build("drive", "v3", credentials=credentials, cache_discovery=False)
-    root = fetch_folder(service, folder_id)
+    try:
+        root_metadata = (
+            service.files()
+            .get(fileId=folder_id, fields="id, name, mimeType", supportsAllDrives=True)
+            .execute()
+        )
+        if root_metadata["mimeType"] != FOLDER_MIME_TYPE:
+            raise RuntimeError("GDRIVE_FOLDER_ID must identify a Google Drive folder")
+        root = fetch_folder(service, folder_id, root_metadata["name"])
+    except HttpError as error:
+        status = getattr(error.resp, "status", "unknown")
+        raise RuntimeError(
+            "Google Drive request failed "
+            f"(HTTP {status}). Confirm that the Drive API is enabled and the folder "
+            "is shared with the service account client_email."
+        ) from error
 
     inject_dynamic_content(render_dynamic_content(root))
     print_summary(root)
