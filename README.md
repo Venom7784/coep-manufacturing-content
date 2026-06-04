@@ -6,39 +6,28 @@ A static GitHub Pages site for sharing academic material with juniors from a Goo
 
 The website reads `site-data.json` and displays the folders/files from Google Drive automatically.
 
-The current Drive source is:
+Run the `Update site from Drive` workflow manually whenever the Drive content changes. It authenticates with a service account, recursively reads the configured Drive folder, and commits `site-data.json` only when the generated Drive index changed.
 
-```text
-https://drive.google.com/drive/folders/1vYlQn7uYj7P_cS2mivpexOBRzY6KUfm9
-```
-
-Run the `Build folder index` workflow manually whenever the Drive content changes. It runs `scripts/build-index.js`, reads the Drive folder with the Google Drive API, and commits an updated `site-data.json` only when the generated data changed. A push to `main` or `master` also runs the workflow.
-
-The GitHub repository needs a secret named `GOOGLE_DRIVE_API_KEY`. The Drive folder must be accessible to that API key, usually by setting the folder sharing to anyone with the link can view.
+The GitHub repository needs secrets named `GDRIVE_SERVICE_KEY` and `GDRIVE_FOLDER_ID`. Share the Drive folder with the service account's `client_email`.
 
 ## Adding material
 
 1. Add or update any folder/file in the Google Drive folder.
 2. Open the repository's `Actions` tab on GitHub.
-3. Select `Build folder index`, choose `Run workflow`, and run it.
+3. Select `Update site from Drive`, choose `Run workflow`, and run it.
 4. Wait for the workflow to finish.
 5. Refresh the GitHub Pages website.
 
 ## Local preview
 
-Generate the folder index:
-
-```bash
-GOOGLE_DRIVE_API_KEY=your-api-key GOOGLE_DRIVE_FOLDER_URL=your-folder-link node scripts/build-index.js
-```
-
-In PowerShell:
+Generate the Drive index:
 
 ```powershell
-$env:GOOGLE_DRIVE_API_KEY = "your-api-key"
-$env:GOOGLE_DRIVE_FOLDER_URL = "your-folder-link"
-node scripts/build-index.js
+$env:GDRIVE_FOLDER_ID = "your-folder-id"
+python generate_site.py
 ```
+
+Local generation also requires the service account key at `service_account.json`.
 
 Start a small local server:
 
@@ -69,7 +58,7 @@ https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
 
 ## Notes
 
-- The Drive folder link is configured in `.github/workflows/build-index.yml`.
+- The Drive folder ID is stored in the `GDRIVE_FOLDER_ID` GitHub Actions secret.
 - The workflow does not run on a timer.
 - Public GitHub Pages repos are easiest for juniors to access.
 - Keep Drive file names readable, such as `unit-1-notes.pdf` or `dsa-assignment-2.pdf`.

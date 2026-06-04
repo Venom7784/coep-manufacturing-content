@@ -34,8 +34,8 @@ function render() {
   const activeNode = findNode(root, state.activePath) || root;
   const visibleRoot = state.query ? filterTree(root, state.query) : root;
 
-  repoLink.href = state.data.sourceUrl || state.data.repositoryUrl || "#";
-  repoLink.textContent = state.data.sourceLabel ? `Open ${state.data.sourceLabel}` : "View Repository";
+  repoLink.href = state.data.sourceUrl || "#";
+  repoLink.textContent = "Open Google Drive";
   repoLink.hidden = !repoLink.href || repoLink.href.endsWith("#");
 
   renderFolderTree(visibleRoot || root);
@@ -250,7 +250,7 @@ function renderError(error) {
   summary.innerHTML = "";
   items.innerHTML = "";
   folderTree.innerHTML = "";
-  items.append(emptyMessage(`${error.message}. Run "node scripts/build-index.js" to create it.`));
+  items.append(emptyMessage(`${error.message}. Run the "Update site from Drive" GitHub Action to create it.`));
 }
 
 function setActivePath(path) {

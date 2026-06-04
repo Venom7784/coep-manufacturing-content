@@ -1,38 +1,11 @@
 {
-  "repositoryUrl": "https://github.com/Venom7784/coep-manufacturing-content",
+  "sourceUrl": "",
+  "sourceLabel": "Google Drive",
   "root": {
     "type": "folder",
-    "name": "",
+    "name": "Google Drive",
     "path": "",
-    "children": [
-      {
-        "type": "folder",
-        "name": "OE_notes",
-        "path": "OE_notes",
-        "children": [
-          {
-            "type": "file",
-            "name": "Markov_Chain_New.pdf",
-            "path": "OE_notes/Markov_Chain_New.pdf",
-            "size": 198759,
-            "updatedAt": "2026-06-03T14:05:44.609Z"
-          },
-          {
-            "type": "file",
-            "name": "Non_Parametric_Tests.pdf",
-            "path": "OE_notes/Non_Parametric_Tests.pdf",
-            "size": 211399,
-            "updatedAt": "2026-06-03T14:05:44.610Z"
-          },
-          {
-            "type": "file",
-            "name": "OE_Stat_with_R_2.pdf",
-            "path": "OE_notes/OE_Stat_with_R_2.pdf",
-            "size": 127766,
-            "updatedAt": "2026-06-03T14:05:44.610Z"
-          }
-        ]
-      }
-    ]
+    "url": "",
+    "children": []
   }
 }
