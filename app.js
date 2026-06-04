@@ -34,8 +34,9 @@ function render() {
   const activeNode = findNode(root, state.activePath) || root;
   const visibleRoot = state.query ? filterTree(root, state.query) : root;
 
-  repoLink.href = state.data.repositoryUrl || "#";
-  repoLink.hidden = !state.data.repositoryUrl;
+  repoLink.href = state.data.sourceUrl || state.data.repositoryUrl || "#";
+  repoLink.textContent = state.data.sourceLabel ? `Open ${state.data.sourceLabel}` : "View Repository";
+  repoLink.hidden = !repoLink.href || repoLink.href.endsWith("#");
 
   renderFolderTree(visibleRoot || root);
   renderBreadcrumb(activeNode);
@@ -89,8 +90,8 @@ function renderBreadcrumb(node) {
 
 function renderContent(node) {
   currentTitle.textContent = displayName(node);
-  openFolderLink.href = node.path || "./";
-  openFolderLink.hidden = !node.path;
+  openFolderLink.href = node.url || node.path || "./";
+  openFolderLink.hidden = !openFolderLink.href || openFolderLink.href.endsWith("#");
 
   const folders = node.children.filter((child) => child.type === "folder");
   const files = node.children.filter((child) => child.type === "file");
@@ -116,7 +117,11 @@ function renderContent(node) {
 function itemCard(node) {
   const link = document.createElement("a");
   link.className = "item";
-  link.href = node.type === "folder" ? `#${node.path}` : encodeURI(node.path);
+  link.href = node.type === "folder" ? `#${node.path}` : encodeURI(node.url || node.path);
+  if (node.type !== "folder" && node.url) {
+    link.target = "_blank";
+    link.rel = "noopener";
+  }
   link.addEventListener("click", (event) => {
     if (node.type !== "folder") {
       return;

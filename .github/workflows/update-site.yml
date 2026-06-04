@@ -1,0 +1,49 @@
+name: Update site from Drive
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install google-api-python-client google-auth
+
+      - name: Write service account key
+        env:
+          GDRIVE_SERVICE_KEY: ${{ secrets.GDRIVE_SERVICE_KEY }}
+        run: printf '%s' "$GDRIVE_SERVICE_KEY" > service_account.json
+
+      - name: Generate site
+        env:
+          GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
+        run: python generate_site.py
+
+      - name: Delete service account key
+        if: always()
+        run: rm -f service_account.json
+
+      - name: Commit updated site
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "index.html is already up to date"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "chore: update site from Drive"
+          git push

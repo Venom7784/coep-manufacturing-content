@@ -20,3 +20,7 @@ build/
 # Local preview/cache files
 .cache/
 .parcel-cache/
+
+# Environment variables
+.env
+.env.local

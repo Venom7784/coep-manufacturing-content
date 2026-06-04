@@ -1,33 +1,27 @@
 # Academic Notes
 
-A static GitHub Pages site for sharing academic material with juniors.
+A static GitHub Pages site for sharing academic material with juniors from a Google Drive folder.
 
 ## How it works
 
-The website reads `site-data.json` and displays your folders/files automatically.
+The website reads `site-data.json` and displays the folders/files from Google Drive automatically.
 
-You only need to manage the repo folders, for example:
+The current Drive source is:
 
 ```text
-sem3/
-  dsa/
-    notes.pdf
-    assignments.pdf
-  cn/
-    notes.pdf
-sem4/
-  dbms/
-    unit-1.pdf
+https://drive.google.com/drive/folders/1vYlQn7uYj7P_cS2mivpexOBRzY6KUfm9
 ```
 
-After you push changes to GitHub, the included GitHub Action runs `scripts/build-index.js` and commits the updated `site-data.json` back to the repo. Pull after the Action finishes so your local copy stays up to date.
+Run the `Build folder index` workflow manually whenever the Drive content changes. It runs `scripts/build-index.js`, reads the Drive folder with the Google Drive API, and commits an updated `site-data.json` only when the generated data changed. A push to `main` or `master` also runs the workflow.
+
+The GitHub repository needs a secret named `GOOGLE_DRIVE_API_KEY`. The Drive folder must be accessible to that API key, usually by setting the folder sharing to anyone with the link can view.
 
 ## Adding material
 
-1. Add or update any folder/file in the repo.
-2. Commit and push to GitHub.
-3. Wait for the `Build folder index` action to finish.
-4. Run `git pull origin main` locally.
+1. Add or update any folder/file in the Google Drive folder.
+2. Open the repository's `Actions` tab on GitHub.
+3. Select `Build folder index`, choose `Run workflow`, and run it.
+4. Wait for the workflow to finish.
 5. Refresh the GitHub Pages website.
 
 ## Local preview
@@ -35,6 +29,14 @@ After you push changes to GitHub, the included GitHub Action runs `scripts/build
 Generate the folder index:
 
 ```bash
+GOOGLE_DRIVE_API_KEY=your-api-key GOOGLE_DRIVE_FOLDER_URL=your-folder-link node scripts/build-index.js
+```
+
+In PowerShell:
+
+```powershell
+$env:GOOGLE_DRIVE_API_KEY = "your-api-key"
+$env:GOOGLE_DRIVE_FOLDER_URL = "your-folder-link"
 node scripts/build-index.js
 ```
 
@@ -67,6 +69,7 @@ https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
 
 ## Notes
 
-- The site ignores internal files like `index.html`, `style.css`, `app.js`, `.github`, and `scripts`.
+- The Drive folder link is configured in `.github/workflows/build-index.yml`.
+- The workflow does not run on a timer.
 - Public GitHub Pages repos are easiest for juniors to access.
-- Keep file names readable, such as `unit-1-notes.pdf` or `dsa-assignment-2.pdf`.
+- Keep Drive file names readable, such as `unit-1-notes.pdf` or `dsa-assignment-2.pdf`.

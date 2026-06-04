@@ -3,6 +3,14 @@ const path = require("path");
 
 const rootDir = path.resolve(__dirname, "..");
 const outputFile = path.join(rootDir, "site-data.json");
+const defaultDriveFolder = "https://drive.google.com/drive/folders/1vYlQn7uYj7P_cS2mivpexOBRzY6KUfm9";
+const driveFolderId = parseDriveFolderId(
+  process.env.GOOGLE_DRIVE_FOLDER_URL
+    || process.env.GOOGLE_DRIVE_FOLDER_ID
+    || defaultDriveFolder,
+);
+const driveApiKey = process.env.GOOGLE_DRIVE_API_KEY || "";
+const driveFolderMimeType = "application/vnd.google-apps.folder";
 
 const ignoredNames = new Set([
   ".git",
@@ -117,10 +125,109 @@ function normalizeRemoteUrl(remote) {
   return remote.replace(/\.git$/, "");
 }
 
-const data = {
-  repositoryUrl: repositoryUrl(),
-  root: buildNode(rootDir),
-};
+function driveFolderUrl(id) {
+  return `https://drive.google.com/drive/folders/${id}`;
+}
 
-fs.writeFileSync(outputFile, `${JSON.stringify(data, null, 2)}\n`);
-console.log(`Generated ${path.relative(rootDir, outputFile)}`);
+function parseDriveFolderId(value) {
+  const folder = value.trim();
+  const urlMatch = folder.match(/drive\.google\.com\/drive\/(?:u\/\d+\/)?folders\/([^/?#]+)/);
+  return urlMatch ? urlMatch[1] : folder;
+}
+
+function driveFileUrl(id) {
+  return `https://drive.google.com/file/d/${id}/view`;
+}
+
+async function listDriveChildren(folderId) {
+  if (!folderId) {
+    throw new Error("GOOGLE_DRIVE_FOLDER_URL or GOOGLE_DRIVE_FOLDER_ID is required");
+  }
+
+  if (!driveApiKey) {
+    throw new Error("GOOGLE_DRIVE_API_KEY is required to index Google Drive content");
+  }
+
+  const children = [];
+  let pageToken = "";
+
+  do {
+    const url = new URL("https://www.googleapis.com/drive/v3/files");
+    url.searchParams.set("key", driveApiKey);
+    url.searchParams.set("q", `'${folderId}' in parents and trashed = false`);
+    url.searchParams.set("fields", "nextPageToken,files(id,name,mimeType,size,modifiedTime,webViewLink)");
+    url.searchParams.set("pageSize", "1000");
+    url.searchParams.set("orderBy", "folder,name_natural");
+
+    if (pageToken) {
+      url.searchParams.set("pageToken", pageToken);
+    }
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      const message = await response.text();
+      throw new Error(`Google Drive API request failed (${response.status}): ${message}`);
+    }
+
+    const data = await response.json();
+    children.push(...(data.files || []));
+    pageToken = data.nextPageToken || "";
+  } while (pageToken);
+
+  return children;
+}
+
+async function buildDriveNode(folderId, relativePath = "", name = "") {
+  const children = await Promise.all((await listDriveChildren(folderId)).map(async (entry) => {
+    const childRelativePath = path.posix.join(relativePath, entry.name);
+
+    if (entry.mimeType === driveFolderMimeType) {
+      return buildDriveNode(entry.id, childRelativePath, entry.name);
+    }
+
+    return {
+      type: "file",
+      name: entry.name,
+      path: childRelativePath,
+      url: entry.webViewLink || driveFileUrl(entry.id),
+      size: Number(entry.size || 0),
+      updatedAt: entry.modifiedTime || "",
+    };
+  }));
+
+  return {
+    type: "folder",
+    name,
+    path: relativePath,
+    url: driveFolderUrl(folderId),
+    children: children.sort(compareNodes),
+  };
+}
+
+async function buildData() {
+  if (driveFolderId) {
+    return {
+      repositoryUrl: repositoryUrl(),
+      sourceUrl: driveFolderUrl(driveFolderId),
+      sourceLabel: "Google Drive",
+      root: await buildDriveNode(driveFolderId),
+    };
+  }
+
+  return {
+    repositoryUrl: repositoryUrl(),
+    sourceUrl: "",
+    sourceLabel: "Repository",
+    root: buildNode(rootDir),
+  };
+}
+
+buildData()
+  .then((data) => {
+    fs.writeFileSync(outputFile, `${JSON.stringify(data, null, 2)}\n`);
+    console.log(`Generated ${path.relative(rootDir, outputFile)}`);
+  })
+  .catch((error) => {
+    console.error(error.message);
+    process.exit(1);
+  });
